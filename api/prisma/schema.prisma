@@ -237,11 +237,11 @@ model Warehouse {
   description String?
   status      WarehouseStatus @default(ACTIVE)
 
-  inventories Inventory[]
-
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
+  inventories        Inventory[]
   inventoryMovements InventoryMovement[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([status])
   @@map("warehouses")
