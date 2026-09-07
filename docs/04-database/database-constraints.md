@@ -1,62 +1,57 @@
 # Database Constraints
 
-## 1. Purpose
+## Purpose
 
-Define the integrity constraints that must be enforced by the
-physical database schema.
+Database constraints protect critical business invariants independently
+from the application layer.
 
----
+## Product
 
-# 2. Primary Keys
+- price >= 0
+- cost >= 0
 
-Every principal entity must have a unique primary key.
+## Inventory
 
-The initial design uses UUID identifiers.
+- quantity >= 0
 
-Entities include:
+## Inventory Movement
 
-- users
-- roles
-- permissions
-- categories
-- products
-- customers
-- suppliers
-- warehouses
-- inventory
-- inventory_movements
-- purchases
-- purchase_items
-- sales
-- sale_items
-- audit_logs
+- quantity > 0
 
----
+## Purchase
 
-# 3. Foreign Keys
+- total >= 0
 
-The database must enforce valid references between related entities.
+## Purchase Item
 
-Examples:
+- quantity > 0
+- unitCost >= 0
+- subtotal >= 0
 
-```text
-products.category_id
-        ↓
-categories.id
+## Sale
 
-inventory.warehouse_id
-        ↓
-warehouses.id
+- total >= 0
 
-sales.customer_id
-        ↓
-customers.id
+## Sale Item
 
-sale_items.sale_id
-        ↓
-sales.id
+- quantity > 0
+- unitPrice >= 0
+- subtotal >= 0
 
-sale_items.product_id
-        ↓
-products.id
+## Business State Transitions
 
+Purchase and Sale lifecycle transitions are enforced at the
+application/domain layer rather than through CHECK constraints.
+
+Allowed transitions:
+
+DRAFT -> COMPLETED
+DRAFT -> CANCELLED
+
+COMPLETED and CANCELLED are terminal states in the initial model.
+
+## Migration Strategy
+
+Database constraints are implemented through versioned Prisma migrations.
+Custom PostgreSQL CHECK constraints are maintained inside migration SQL
+when they cannot be represented directly in the Prisma schema.
