@@ -9,7 +9,9 @@
     "prisma:validate": "prisma validate",
     "prisma:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:status": "prisma migrate status"
+    "db:status": "prisma migrate status",
+    "test:database": "tsx src/database/database-integrity.ts",
+    "test:constraints": "tsx src/database/constraint-rejection.ts"
   },
   "keywords": [],
   "author": "",
